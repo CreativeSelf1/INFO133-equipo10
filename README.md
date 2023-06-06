@@ -1,1 +1,0 @@
-# INFO133-equipo10
