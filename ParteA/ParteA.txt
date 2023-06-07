@@ -5,9 +5,8 @@ medios_de_prensa(PK_nombre, año_fundacion, cobertura, fundadores, FK_ID_ubicaci
 sitio_web(PK_url_principal)
 categoria(PK_url_categoria, nombre, XPATH, FK_url_principal)
 Noticia(PK_url_noticia, XPATH_fecha, XPATH_titulo, XPATH_contenido)
-Fundadores(PK_ID, nombre, apellido)
+Fundadores(PK_ID, nombre, apellido, FK_nombre)
 Redes_sociales(PK_cuenta, numero_seguidores, fec_ultima_actualizacion,FK_nombre)
 contiene(PK(FK_url_noticia, FK_url_categoria))
-crean(PK(FK_ID, FK_nombre))
 
 
