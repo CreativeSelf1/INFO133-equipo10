@@ -1,14 +1,13 @@
 Modelo Relacional
 
 ubicacion(PK_ID_ubicacion, ciudad, region, pais, continente)
-medios_de_prensa(PK_nombre, año_fundacion, cobertura, fundadores)
+medios_de_prensa(PK_nombre, año_fundacion, cobertura, fundadores, FK_ID_ubicacion, FK_url_principal)
 sitio_web(PK_url_principal)
-categoria(PK_url_categoria, nombre, XPATH)
+categoria(PK_url_categoria, nombre, XPATH, FK_url_principal)
 Noticia(PK_url_noticia, XPATH_fecha, XPATH_titulo, XPATH_contenido)
-"nombrerelacion_ubi-prensa"(PK(FK_ID_ubicacion, FK_nombre))
-"nombrerelacion_sitioweb-prensa"(PK(FK_nombre, FK_url_principal))
-"nombrerelacion_web-categoria(PK(FK_url_principal, FK_url_categoria))
-"nombrerelacion_prensa-noticia(PK(FK_nombre, FK_url_noticia))
-"nombrerelacion_noticia-categoria"(PK(FK_url_categoria, FK_url_categoria))
+Fundadores(PK_ID, nombre, apellido)
+Redes_sociales(PK_cuenta, numero_seguidores, fec_ultima_actualizacion,FK_nombre)
+contiene(PK(FK_url_noticia, FK_url_categoria))
+crean(PK(FK_ID, FK_nombre))
 
 
