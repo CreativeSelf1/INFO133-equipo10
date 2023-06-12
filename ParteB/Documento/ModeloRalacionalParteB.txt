@@ -1,1 +1,5 @@
 Modelo Relacional
+
+pais()
+region()
+comuna()
