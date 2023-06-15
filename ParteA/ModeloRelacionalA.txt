@@ -1,11 +1,11 @@
 Modelo Relacional
 
-ubicacion(ID_ubicacion, ciudad, region, pais, continente)
-medios_de_prensa(nombre_prensa, año_fundacion, cobertura, url_principal, FK_ID_ubicacion)
-redes_sociales(ID_cuenta, numero_seguidores, aplicacion,fec_ultima_actualizacion,FK_nombre_prensa)
-fundadores(ID_fundador, nombre, apellido, FK_nombre_prensa)
-categoria(url_categoria, nombre, XPATH, FK_nombre_prensa)
-noticia(url_noticia, XPATH_fecha, XPATH_titulo, XPATH_contenido, FK_url_categoria, FK_nombre_medioprensa)
+ubicacion(PK_ID_ubicacion, ciudad, region, pais, continente)
+medios_de_prensa(PK_nombre_prensa, año_fundacion, cobertura, url_principal, FK_ID_ubicacion)
+redes_sociales(PK_ID_cuenta, numero_seguidores, aplicacion,fec_ultima_actualizacion,FK_nombre_prensa)
+fundadores(PK_ID_fundador, nombre, apellido, FK_nombre_prensa)
+categoria(PK_url_categoria, nombre, XPATH, FK_nombre_prensa)
+noticia(PK_url_noticia, XPATH_fecha, XPATH_titulo, XPATH_contenido, FK_url_categoria, FK_nombre_prensa)
 
 
 
