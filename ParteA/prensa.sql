@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: medios_prensa
+-- Host: localhost    Database: nombre_basedatos
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.6.12-MariaDB-0ubuntu0.22.04.1
 
@@ -28,7 +28,7 @@ CREATE TABLE `categoria` (
   `XPATH` varchar(255) DEFAULT NULL,
   `nombre_prensa` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`url_categoria`),
-  KEY `FK_nombre_medioprensa` (`nombre_prensa`),
+  KEY `FK_nombre_prensa` (`nombre_prensa`),
   CONSTRAINT `categoria_ibfk_1` FOREIGN KEY (`nombre_prensa`) REFERENCES `medios_de_prensa` (`nombre_prensa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -55,7 +55,7 @@ CREATE TABLE `fundadores` (
   `apellido` varchar(255) DEFAULT NULL,
   `nombre_prensa` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID_fundador`),
-  KEY `FK_nombre_medioprensa` (`nombre_prensa`),
+  KEY `FK_nombre_prensa` (`nombre_prensa`),
   CONSTRAINT `fundadores_ibfk_1` FOREIGN KEY (`nombre_prensa`) REFERENCES `medios_de_prensa` (`nombre_prensa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -82,12 +82,9 @@ CREATE TABLE `medios_de_prensa` (
   `cobertura` varchar(255) DEFAULT NULL,
   `url_principal` varchar(255) DEFAULT NULL,
   `ID_ubicacion` int(11) DEFAULT NULL,
-  `url_noticia` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`nombre_prensa`),
   KEY `FK_ID_ubicacion` (`ID_ubicacion`),
-  KEY `FK_url_noticia` (`url_noticia`),
-  CONSTRAINT `medios_de_prensa_ibfk_1` FOREIGN KEY (`ID_ubicacion`) REFERENCES `ubicacion` (`ID_ubicacion`),
-  CONSTRAINT `medios_de_prensa_ibfk_2` FOREIGN KEY (`url_noticia`) REFERENCES `noticia` (`url_noticia`)
+  CONSTRAINT `medios_de_prensa_ibfk_1` FOREIGN KEY (`ID_ubicacion`) REFERENCES `ubicacion` (`ID_ubicacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -97,7 +94,6 @@ CREATE TABLE `medios_de_prensa` (
 
 LOCK TABLES `medios_de_prensa` WRITE;
 /*!40000 ALTER TABLE `medios_de_prensa` DISABLE KEYS */;
-INSERT INTO `medios_de_prensa` VALUES ('austral',1990,'nacional','',NULL,NULL),('jupoter',1990,'nacional','https://www.youtube.com/',NULL,NULL),('merc',19090,'nacional','https://www.youtube.com/watch?v=95Qu2xavAsA',NULL,NULL),('mercurio',1990,'nacional','https://www.instagram.com/',NULL,NULL);
 /*!40000 ALTER TABLE `medios_de_prensa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,9 +110,12 @@ CREATE TABLE `noticia` (
   `XPATH_titulo` varchar(255) DEFAULT NULL,
   `XPATH_contenido` varchar(255) DEFAULT NULL,
   `url_categoria` varchar(255) DEFAULT NULL,
+  `nombre_prensa` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`url_noticia`),
   KEY `FK_url_categoria` (`url_categoria`),
-  CONSTRAINT `noticia_ibfk_1` FOREIGN KEY (`url_categoria`) REFERENCES `categoria` (`url_categoria`)
+  KEY `FK_nombre_medioprensa` (`nombre_prensa`),
+  CONSTRAINT `noticia_ibfk_1` FOREIGN KEY (`url_categoria`) REFERENCES `categoria` (`url_categoria`),
+  CONSTRAINT `noticia_ibfk_2` FOREIGN KEY (`nombre_prensa`) REFERENCES `medios_de_prensa` (`nombre_prensa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,12 +136,13 @@ DROP TABLE IF EXISTS `redes_sociales`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `redes_sociales` (
-  `cuenta` varchar(255) NOT NULL,
+  `ID_cuenta` int(11) NOT NULL,
   `numero_seguidores` int(11) DEFAULT NULL,
+  `aplicacion` varchar(255) DEFAULT NULL,
   `fec_ultima_actualizacion` date DEFAULT NULL,
   `nombre_prensa` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`cuenta`),
-  KEY `FK_nombre_medioprensa` (`nombre_prensa`),
+  PRIMARY KEY (`ID_cuenta`),
+  KEY `FK_nombre_prensa` (`nombre_prensa`),
   CONSTRAINT `redes_sociales_ibfk_1` FOREIGN KEY (`nombre_prensa`) REFERENCES `medios_de_prensa` (`nombre_prensa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -183,7 +183,7 @@ LOCK TABLES `ubicacion` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'medios_prensa'
+-- Dumping routines for database 'nombre_basedatos'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -195,4 +195,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-15 10:26:57
+-- Dump completed on 2023-06-15 13:41:17
