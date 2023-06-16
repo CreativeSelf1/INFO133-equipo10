@@ -1,26 +1,32 @@
 import mariadb
+import uuid
+
 
 # Establecer la conexión con la base de datos
 try:
     conn = mariadb.connect(
-        user="usuario",
-        password="constraseña",
+        user="",
+        password="",
         host="localhost",
         port=3306,
-        database="nombre_basedatos"  # Reemplaza con el nombre de tu base de datos
+        database="medios_prensa"  # Reemplaza con el nombre de tu base de datos
     )
     cursor = conn.cursor()
 except mariadb.Error as e:
     print(f"Error al conectarse a la base de datos: {e}")
     exit()
 
+# Generar UUIDs
+ID_ubicacion = str(uuid.uuid4())
+ID_cuenta = str(uuid.uuid4())
+ID_fundador = str(uuid.uuid4())
+
 # Ingresar datos para la tabla `ubicacion`
-ID_ubicacion = input("Ingresa el ID de ubicación: ")
+#ID_ubicacion = input("Ingresa el ID de ubicación: ")
 ciudad = input("Ingresa el nombre de la ciudad: ")
 region = input("Ingresa el nombre de la región: ")
-pais = input("Ingresa el nombre del país: ")
-continente = input("Ingresa el nombre del continente: ")
-
+pais = "Paraguay"
+continente = "América"
 # Insertar datos en la tabla `ubicacion`
 cursor.execute(
     "INSERT INTO ubicacion (ID_ubicacion, ciudad, region, pais, continente) VALUES (?, ?, ?, ?, ?)",
@@ -40,30 +46,53 @@ cursor.execute(
 )
 conn.commit()
 
-# Ingresar datos para la tabla `redes_sociales`
-ID_cuenta = input("Ingresa el ID de la cuenta de redes sociales: ")
-numero_seguidores = input("Ingresa el número de seguidores: ")
-aplicacion = input("Ingresa el nombre de la aplicación: ")
-fec_ultima_actualizacion = input("Ingresa la fecha de última actualización: ")
 
-# Insertar datos en la tabla `redes_sociales`
-cursor.execute(
-    "INSERT INTO redes_sociales (ID_cuenta, numero_seguidores, aplicacion, fec_ultima_actualizacion, nombre_prensa) VALUES (?, ?, ?, ?, ?)",
-    (ID_cuenta, numero_seguidores, aplicacion, fec_ultima_actualizacion, nombre_prensa)
-)
-conn.commit()
+# Ingresar datos para la tabla `redes_sociales`
+num_redes_sociales = int(input("Ingresa el número de redes_sociales: "))
+
+for i in range(num_redes_sociales):
+    #ID_cuenta = input("Ingresa el ID de la cuenta de redes sociales: ")
+    numero_red_social = int(input("Ingresa el número correspondiente a la red social 1:Instagram  2:Facebook  3:Twitter  4:otro  :"))
+
+    if numero_red_social == 1:
+        aplicacion = "instagram"
+    elif numero_red_social == 2:
+        aplicacion = "facebook"
+    elif numero_red_social == 3:
+        aplicacion = "twitter"
+    elif numero_red_social == 4:
+        aplicacion = "otro"
+    else:
+        print("Número de red social no válido")
+        
+    usuario = input("Ingresa el usuario de la aplicación: ")
+    numero_seguidores = input("Ingresa el número de seguidores: ")
+    fec_ultima_actualizacion = input("Ingresa la fecha de última actualización: ")
+
+    # Insertar datos en la tabla `redes_sociales`
+    cursor.execute(
+        "INSERT INTO redes_sociales (ID_cuenta, numero_seguidores, aplicacion, fec_ultima_actualizacion, nombre_prensa, usuario) VALUES (?, ?, ?, ?, ?, ?)",
+        (ID_cuenta, numero_seguidores, aplicacion, fec_ultima_actualizacion, nombre_prensa, usuario)
+    )
+    ID_cuenta = str(uuid.uuid4())
+    conn.commit()
+
 
 # Ingresar datos para la tabla `fundadores`
-ID_fundador = input("Ingresa el ID del fundador: ")
-nombre = input("Ingresa el nombre del fundador: ")
-apellido = input("Ingresa el apellido del fundador: ")
+num_fundadores = int(input("Ingresa el número de fundadores: "))
 
-# Insertar datos en la tabla `fundadores`
-cursor.execute(
-    "INSERT INTO fundadores (ID_fundador, nombre, apellido, nombre_prensa) VALUES (?, ?, ?, ?)",
-    (ID_fundador, nombre, apellido, nombre_prensa)
-)
-conn.commit()
+for i in range(num_fundadores):
+    #ID_fundador = input("Ingresa el ID del fundador: ")
+    nombre = input("Ingresa el nombre del fundador: ")
+    apellido = input("Ingresa el apellido del fundador: ")
+
+    # Insertar datos en la tabla `fundadores` con el ID del medio de prensa correspondiente
+    cursor.execute(
+        "INSERT INTO fundadores (ID_fundador, nombre, apellido, nombre_prensa) VALUES (?, ?, ?, ?)",
+        (ID_fundador, nombre, apellido, nombre_prensa)
+    )
+    ID_fundador = str(uuid.uuid4())
+    conn.commit()
 
 # Ingresar datos para la tabla `categoria`
 url_categoria = input("Ingresa la URL de la categoría: ")
