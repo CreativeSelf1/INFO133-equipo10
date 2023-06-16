@@ -94,17 +94,23 @@ for i in range(num_fundadores):
     ID_fundador = str(uuid.uuid4())
     conn.commit()
 
-# Ingresar datos para la tabla `categoria`
-url_categoria = input("Ingresa la URL de la categoría: ")
-nombre_categoria = input("Ingresa el nombre de la categoría: ")
-XPATH = input("Ingresa el XPATH: ")
 
-# Insertar datos en la tabla `categoria`
-cursor.execute(
-    "INSERT INTO categoria (url_categoria, nombre, XPATH, nombre_prensa) VALUES (?, ?, ?, ?)",
-    (url_categoria, nombre_categoria, XPATH, nombre_prensa)
-)
-conn.commit()
+
+# Ingresar datos para la tabla `categoria`
+cantidad_categorias = int(input("Ingresa el número de categorias: "))
+
+for i in range(cantidad_categorias):
+    url_categoria = input("Ingresa la URL de la categoría: ")
+    nombre_categoria = input("Ingresa el nombre de la categoría: ")
+    XPATH = input("Ingresa el XPATH: ")
+
+    # Insertar datos en la tabla `categoria`
+
+    cursor.execute(
+        "INSERT INTO categoria (url_categoria, nombre, XPATH, nombre_prensa) VALUES (?, ?, ?, ?)",
+        (url_categoria, nombre_categoria, XPATH, nombre_prensa)
+    )
+    conn.commit()
 
 # Ingresar datos para la tabla `noticia`
 url_noticia = input("Ingresa la URL de la noticia: ")
