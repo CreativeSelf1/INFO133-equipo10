@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: nombre_basedatos
+-- Host: localhost    Database: medios_prensa
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.6.12-MariaDB-0ubuntu0.22.04.1
 
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `fundadores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `fundadores` (
-  `ID_fundador` int(11) NOT NULL,
+  `ID_fundador` varchar(255) NOT NULL,
   `nombre` varchar(255) DEFAULT NULL,
   `apellido` varchar(255) DEFAULT NULL,
   `nombre_prensa` varchar(255) DEFAULT NULL,
@@ -81,10 +81,9 @@ CREATE TABLE `medios_de_prensa` (
   `año_fundacion` int(11) DEFAULT NULL,
   `cobertura` varchar(255) DEFAULT NULL,
   `url_principal` varchar(255) DEFAULT NULL,
-  `ID_ubicacion` int(11) DEFAULT NULL,
+  `ID_ubicacion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`nombre_prensa`),
-  KEY `FK_ID_ubicacion` (`ID_ubicacion`),
-  CONSTRAINT `medios_de_prensa_ibfk_1` FOREIGN KEY (`ID_ubicacion`) REFERENCES `ubicacion` (`ID_ubicacion`)
+  KEY `FK_ID_ubicacion` (`ID_ubicacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -136,11 +135,12 @@ DROP TABLE IF EXISTS `redes_sociales`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `redes_sociales` (
-  `ID_cuenta` int(11) NOT NULL,
+  `ID_cuenta` varchar(255) NOT NULL,
   `numero_seguidores` int(11) DEFAULT NULL,
   `aplicacion` varchar(255) DEFAULT NULL,
   `fec_ultima_actualizacion` date DEFAULT NULL,
   `nombre_prensa` varchar(255) DEFAULT NULL,
+  `usuario` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ID_cuenta`),
   KEY `FK_nombre_prensa` (`nombre_prensa`),
   CONSTRAINT `redes_sociales_ibfk_1` FOREIGN KEY (`nombre_prensa`) REFERENCES `medios_de_prensa` (`nombre_prensa`)
@@ -164,7 +164,7 @@ DROP TABLE IF EXISTS `ubicacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ubicacion` (
-  `ID_ubicacion` int(11) NOT NULL,
+  `ID_ubicacion` varchar(255) NOT NULL,
   `ciudad` varchar(255) DEFAULT NULL,
   `region` varchar(255) DEFAULT NULL,
   `pais` varchar(255) DEFAULT NULL,
@@ -183,7 +183,7 @@ LOCK TABLES `ubicacion` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'nombre_basedatos'
+-- Dumping routines for database 'medios_prensa'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -195,4 +195,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-15 13:41:17
+-- Dump completed on 2023-06-16 13:34:11
