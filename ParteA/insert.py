@@ -113,6 +113,7 @@ for i in range(cantidad_categorias):
     conn.commit()
 
 # Ingresar datos para la tabla `noticia`
+url_categoria = input("Ingresa la URL de la categoría de la noticia: ")
 url_noticia = input("Ingresa la URL de la noticia: ")
 XPATH_fecha = input("Ingresa el XPATH de la fecha: ")
 XPATH_titulo = input("Ingresa el XPATH del título: ")
