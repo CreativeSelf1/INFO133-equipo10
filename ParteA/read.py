@@ -3,8 +3,8 @@ import mariadb
 # Conectarse a la base de datos
 conexion = mariadb.connect(
     host="localhost",
-    user="",
-    password="",
+    user="fernando",
+    password="fernando0607",
     database="medios_prensa"
 )
 

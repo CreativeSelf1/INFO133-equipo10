@@ -5,8 +5,8 @@ import uuid
 # Establecer la conexión con la base de datos
 try:
     conn = mariadb.connect(
-        user="",
-        password="",
+        user="fernando",
+        password="fernando0607",
         host="localhost",
         port=3306,
         database="medios_prensa"  # Reemplaza con el nombre de tu base de datos
