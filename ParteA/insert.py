@@ -5,8 +5,8 @@ import uuid
 # Establecer la conexión con la base de datos
 try:
     conn = mariadb.connect(
-        user="",
-        password="",
+        user="fernando",
+        password="fernando0607",
         host="localhost",
         port=3306,
         database="medios_prensa"  # Reemplaza con el nombre de tu base de datos
@@ -38,6 +38,8 @@ nombre_prensa = input("Ingresa el nombre del medio de prensa: ")
 año_fundacion = input("Ingresa el año de fundación: ")
 cobertura = input("Ingresa la cobertura: ")
 url_principal = input("Ingresa la URL principal: ")
+
+año_fundacion = año_fundacion if año_fundacion.strip() else None
 
 # Insertar datos en la tabla `medios_de_prensa`
 cursor.execute(
@@ -85,6 +87,9 @@ for i in range(num_fundadores):
     #ID_fundador = input("Ingresa el ID del fundador: ")
     nombre = input("Ingresa el nombre del fundador: ")
     apellido = input("Ingresa el apellido del fundador: ")
+    
+    nombre = nombre if nombre.strip() else None
+    apellido = apellido if apellido.strip() else None
 
     # Insertar datos en la tabla `fundadores` con el ID del medio de prensa correspondiente
     cursor.execute(
@@ -104,6 +109,7 @@ for i in range(cantidad_categorias):
     nombre_categoria = input("Ingresa el nombre de la categoría: ")
     XPATH = input("Ingresa el XPATH: ")
 
+    XPATH = XPATH if XPATH.strip() else None
     # Insertar datos en la tabla `categoria`
 
     cursor.execute(
@@ -118,6 +124,11 @@ url_noticia = input("Ingresa la URL de la noticia: ")
 XPATH_fecha = input("Ingresa el XPATH de la fecha: ")
 XPATH_titulo = input("Ingresa el XPATH del título: ")
 XPATH_contenido = input("Ingresa el XPATH del contenido: ")
+
+
+XPATH_fecha = XPATH_fecha if XPATH_fecha.strip() else None
+XPATH_titulo = XPATH_titulo if XPATH_titulo.strip() else None
+XPATH_contenido = XPATH_contenido if XPATH_contenido.strip() else None
 
 
 # Insertar datos en la tabla `noticia`

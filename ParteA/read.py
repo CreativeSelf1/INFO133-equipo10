@@ -3,8 +3,8 @@ import mariadb
 # Conectarse a la base de datos
 conexion = mariadb.connect(
     host="localhost",
-    user="",
-    password="",
+    user="fernando",
+    password="fernando0607",
     database="medios_prensa"
 )
 
@@ -62,10 +62,13 @@ try:
 
     if resultados:
         for resultado in resultados:
-            print(resultado[0])
+            if resultado[0] is not None:
+                print(resultado[0])
+            else:
+                print("Desconocido")
         print("--------------------------------------")
     else:
-        print("No se encontro el XPATH titulo para el medio de prensa:", titulo_xpath)
+        print("No se encontró el XPATH título para el medio de prensa:", titulo_xpath)
 except mariadb.Error as error:
     print("Error al ejecutar la consulta:", error)
     
@@ -75,7 +78,7 @@ info_medio  = input("Informacion medio, año fundacion, ciudad , fundador para e
 
 # Definir la consulta con un parámetro
 consulta = """
-SELECT mdp.nombre_prensa, año_fundacion, u.ciudad, f.nombre 
+SELECT mdp.nombre_prensa, año_fundacion, u.ciudad, f.nombre, f.apellido
 FROM medios_de_prensa mdp 
 JOIN ubicacion u 
 ON u.ID_ubicacion = mdp.ID_ubicacion 
@@ -96,11 +99,15 @@ try:
             año_fundacion = resultado[1]
             ciudad = resultado[2]
             fundadores = resultado[3]
+            apellido = resultado[4]
             
             print("Nombre del medio de prensa:", nombre_prensa)
             print("Año de fundación:", año_fundacion)
             print("Ciudad:", ciudad)
-            print("Nombres de los fundadores:", fundadores)
+            if resultado[4] is not None:
+                print("Nombres de los fundadores:", fundadores, apellido)
+            else:
+                print("Nombres de los fundadores: Desconocido")
             print("--------------------------------------")
     else:
         print("No se encontraron resultados para el XPATH título:", info_medio)
