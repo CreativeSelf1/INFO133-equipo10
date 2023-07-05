@@ -2,6 +2,11 @@ import mariadb
 import time
 import requests
 from bs4 import BeautifulSoup
+import random
+from requests_html import HTMLSession
+import w3lib.html
+import html
+
 # Conectarse a la base de datos
 conexion = mariadb.connect(
     host="localhost",
@@ -10,7 +15,6 @@ conexion = mariadb.connect(
     database="medios_prensa"
 )
 
-# Crear cursor para ejecutar consultas
 cursor = conexion.cursor()
 
 print("Consultas de datos")
@@ -19,7 +23,6 @@ print("--------------------------------------")
 #CONSULTA NUMERO 1
 nombre_medio_categoria = input("Categorias del medio: ")
 
-# Definir la consulta con un parámetro
 consulta = """
 SELECT nombre 
 FROM categoria c
@@ -47,7 +50,6 @@ print("--------------------------------------")
 #CONSULTA NUMERO 2
 titulo_xpath  = input("XPATH titulo de la noticia del medio: ")
 
-# Definir la consulta con un parámetro
 consulta = """
 SELECT XPATH_titulo 
 FROM noticia n 
@@ -78,7 +80,6 @@ print("--------------------------------------")
 #CONSULTA NUMERO 3
 info_medio  = input("Informacion medio, año fundacion, ciudad , fundador para el medio de prensa: ")
 
-# Definir la consulta con un parámetro
 consulta = """
 SELECT mdp.nombre_prensa, año_fundacion, u.ciudad, f.nombre, f.apellido
 FROM medios_de_prensa mdp 
@@ -181,7 +182,10 @@ except mariadb.Error as error:
     
 print("--------------------------------------")
 
-# Parte de Crawling
+######################
+##Parte de Crawling##
+####################
+
 print("Crawling \n")
 nombre_medio = input("Ingrese el nombre del medio de prensa: ")
 nombre_categoria = input("Ingrese el nombre de la categoría: ")
@@ -199,30 +203,63 @@ try:
         url_categoria = resultado[0]
         # print(url_categoria)
 
-        response = requests.get(url_categoria)
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.content, "html.parser")
-
-            articulos = soup.find_all("article")
-            enlaces_noticias = []
-
-            for articulo in articulos:
-                enlace = articulo.find("a", href=True)
-                if enlace:
-                    enlaces_noticias.append(enlace["href"])
-
-            # Imprimir los enlaces encontrados
-            print(f"Enlaces de la categoría {nombre_categoria} en {nombre_medio}:")
-            for enlace in enlaces_noticias:
-                print(enlace)
-        else:
-            print(f"No se pudo acceder a la categoría {nombre_categoria} en {nombre_medio}.")
     else:
+        url_categoria=0
         print(f"No se encontró la categoría {nombre_categoria} en el medio de prensa {nombre_medio}.")
 except mariadb.Error as error:
     print("Error al ejecutar la consulta:", error)
 
 print("--------------------------------------")
+
+def format_date(date):
+        return(date.split("T")[0])
+
+session = HTMLSession()
+
+## URL "SEED" que escrapear
+#URL_SEED = "https://www.hoy.com.py/politica"
+
+
+if(url_categoria!=0):
+## Simular que estamos utilizando un navegador web
+    USER_AGENT_LIST = [
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
+            "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
+            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
+            "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
+            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
+    ]
+    headers = {'user-agent':random.choice(USER_AGENT_LIST) }
+
+    response = session.get(url_categoria,headers=headers)
+
+    ## Analizar ("to parse") el contenido
+
+    xpath_url="//div//h2/a/@href"
+    xpath_url2="//div//h3/a/@href"
+    xpath_url3="//div//label/a/@href"
+    
+    all_urls = response.html.xpath(xpath_url)
+
+    for url in all_urls:
+            article_url = url
+            print(article_url)
+
+    print(len(all_urls))
+
 
 # Cerrar cursor y conexión
 cursor.close()
