@@ -156,7 +156,7 @@ print("--------------------------------------")
 
 #consulta 5
 time.sleep(2)
-print("Cantidad de noticias por cateogoría \n")
+print("Cantidad de noticias por categoría \n")
 
 consulta = """
 SELECT c.nombre , count(url_noticia)
@@ -185,13 +185,12 @@ print("--------------------------------------")
 ######################
 ##Parte de Crawling##
 ####################
-
 print("Crawling \n")
 nombre_medio = input("Ingrese el nombre del medio de prensa: ")
 nombre_categoria = input("Ingrese el nombre de la categoría: ")
 
 consulta = """
-SELECT url_categoria
+SELECT XPATH, url_categoria
 FROM categoria
 WHERE nombre = %s AND nombre_prensa = %s
 """
@@ -200,16 +199,19 @@ try:
     resultado = cursor.fetchone()
 
     if resultado:
-        url_categoria = resultado[0]
-        # print(url_categoria)
-
+        xpath_categoria = resultado[0]
+        url_categoria = resultado[1]
+        print("XPath:", xpath_categoria)
+        print("URL de la categoría:", url_categoria)
     else:
-        url_categoria=0
+        url_categoria = None
         print(f"No se encontró la categoría {nombre_categoria} en el medio de prensa {nombre_medio}.")
 except mariadb.Error as error:
     print("Error al ejecutar la consulta:", error)
+    url_categoria = None
 
 print("--------------------------------------")
+
 
 def format_date(date):
         return(date.split("T")[0])
@@ -220,7 +222,7 @@ session = HTMLSession()
 #URL_SEED = "https://www.hoy.com.py/politica"
 
 
-if(url_categoria!=0):
+if(url_categoria!=None):
 ## Simular que estamos utilizando un navegador web
     USER_AGENT_LIST = [
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
@@ -248,10 +250,8 @@ if(url_categoria!=0):
 
     ## Analizar ("to parse") el contenido
 
-    xpath_url="//div//h2/a/@href"
-    xpath_url2="//div//h3/a/@href"
-    xpath_url3="//div//label/a/@href"
-    
+    xpath_url= xpath_categoria
+
     all_urls = response.html.xpath(xpath_url)
 
     for url in all_urls:
