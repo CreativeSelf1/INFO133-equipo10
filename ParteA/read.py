@@ -11,7 +11,7 @@ import html
 conexion = mariadb.connect(
     host="localhost",
     user="user",
-    password="pasword",
+    password="password",
     database="database"
 )
 
