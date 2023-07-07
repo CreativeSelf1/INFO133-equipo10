@@ -211,9 +211,6 @@ except mariadb.Error as error:
     print("Error al ejecutar la consulta:", error)
     url_categoria = None
 
-print("--------------------------------------")
-
-
 def format_date(date):
         return(date.split("T")[0])
 
@@ -266,6 +263,7 @@ print("--------------------------------------")
 ######################
 ##Parte de Scrapping#
 ####################
+
 print("Scrapping \n")
 nombre_medio = input("Ingrese el nombre del medio de prensa: ")
 
@@ -285,7 +283,6 @@ try:
         print("XPATH_titulo:", XPATH_titulo)
     else:
         url_noticia = None
-        XPATH_titulo = None
         print(f"No se encontró la url de la noticia en el medio de prensa {nombre_medio}.")
 except mariadb.Error as error:
     print("Error al ejecutar la consulta:", error)
@@ -296,7 +293,7 @@ print("--------------------------------------")
 
 session = HTMLSession()
 
-if(XPATH_titulo is not None):
+if(url_noticia is not None):
 
     USER_AGENT_LIST = [
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
@@ -322,12 +319,14 @@ if(XPATH_titulo is not None):
 
     response = session.get(url_noticia,headers=headers)
 
+
     ## Analizar ("to parse") el contenido
-    title = response.html.xpath('//div//h1')[0].text
+    title = response.html.xpath(XPATH_titulo)[0].text
     print(title)
-    contents=response.html.xpath("//div[@class='entry-content']//p")
-    for content in contents:
-            print(content.text)
+    
+    #contents=response.html.xpath("//div[@class='entry-content']//p")
+    #for content in contents:
+    #       print(content.text)
 
 
 
