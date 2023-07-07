@@ -205,6 +205,7 @@ try:
         print("URL de la categoría:", url_categoria)
     else:
         url_categoria = None
+        xpath_categoria = None
         print(f"No se encontró la categoría {nombre_categoria} en el medio de prensa {nombre_medio}.")
 except mariadb.Error as error:
     print("Error al ejecutar la consulta:", error)
@@ -222,7 +223,7 @@ session = HTMLSession()
 #URL_SEED = "https://www.hoy.com.py/politica"
 
 
-if(url_categoria!=None):
+if(xpath_categoria is not None):
 ## Simular que estamos utilizando un navegador web
     USER_AGENT_LIST = [
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
@@ -259,6 +260,75 @@ if(url_categoria!=None):
             print(article_url)
 
     print(len(all_urls))
+print("--------------------------------------")
+
+
+######################
+##Parte de Scrapping#
+####################
+print("Scrapping \n")
+nombre_medio = input("Ingrese el nombre del medio de prensa: ")
+
+consulta = """
+SELECT url_noticia, XPATH_titulo 
+FROM noticia n 
+WHERE nombre_prensa = %s
+"""
+try:
+    cursor.execute(consulta, (nombre_medio,))  # Agrega una coma después de nombre_medio
+    resultado = cursor.fetchone()
+
+    if resultado:
+        url_noticia = resultado[0]
+        XPATH_titulo = resultado[1]
+        print("Noticia:", url_noticia)
+        print("XPATH_titulo:", XPATH_titulo)
+    else:
+        url_noticia = None
+        XPATH_titulo = None
+        print(f"No se encontró la url de la noticia en el medio de prensa {nombre_medio}.")
+except mariadb.Error as error:
+    print("Error al ejecutar la consulta:", error)
+    url_noticia = None
+
+print("--------------------------------------")
+
+
+session = HTMLSession()
+
+if(XPATH_titulo is not None):
+
+    USER_AGENT_LIST = [
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
+            "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
+            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
+            "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+            "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
+            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
+    ]
+    headers = {'user-agent':random.choice(USER_AGENT_LIST) }
+
+    response = session.get(url_noticia,headers=headers)
+
+    ## Analizar ("to parse") el contenido
+    title = response.html.xpath('//div//h1')[0].text
+    print(title)
+    contents=response.html.xpath("//div[@class='entry-content']//p")
+    for content in contents:
+            print(content.text)
+
 
 
 # Cerrar cursor y conexión
