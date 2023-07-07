@@ -211,14 +211,8 @@ except mariadb.Error as error:
     print("Error al ejecutar la consulta:", error)
     url_categoria = None
 
-def format_date(date):
-        return(date.split("T")[0])
 
 session = HTMLSession()
-
-## URL "SEED" que escrapear
-#URL_SEED = "https://www.hoy.com.py/politica"
-
 
 if(xpath_categoria is not None):
 ## Simular que estamos utilizando un navegador web
@@ -243,13 +237,9 @@ if(xpath_categoria is not None):
             "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
     ]
     headers = {'user-agent':random.choice(USER_AGENT_LIST) }
-
     response = session.get(url_categoria,headers=headers)
 
-    ## Analizar ("to parse") el contenido
-
     xpath_url= xpath_categoria
-
     all_urls = response.html.xpath(xpath_url)
 
     for url in all_urls:
@@ -263,7 +253,6 @@ print("--------------------------------------")
 ######################
 ##Parte de Scrapping#
 ####################
-
 print("Scrapping \n")
 nombre_medio = input("Ingrese el nombre del medio de prensa: ")
 
@@ -316,18 +305,15 @@ if(url_noticia is not None):
             "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
     ]
     headers = {'user-agent':random.choice(USER_AGENT_LIST) }
-
     response = session.get(url_noticia,headers=headers)
 
-
-    ## Analizar ("to parse") el contenido
+    
     title = response.html.xpath(XPATH_titulo)[0].text
     print(title)
     
     #contents=response.html.xpath("//div[@class='entry-content']//p")
     #for content in contents:
     #       print(content.text)
-
 
 
 # Cerrar cursor y conexión
