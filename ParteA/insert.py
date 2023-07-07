@@ -5,11 +5,11 @@ import uuid
 # Establecer la conexión con la base de datos
 try:
     conn = mariadb.connect(
-        user="fernando",
-        password="fernando0607",
+        user="user",
+        password="password",
         host="localhost",
         port=3306,
-        database="medios_prensa"  # Reemplaza con el nombre de tu base de datos
+        database="database"  # Reemplaza con el nombre de tu base de datos
     )
     cursor = conn.cursor()
 except mariadb.Error as e:

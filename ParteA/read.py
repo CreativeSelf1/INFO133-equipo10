@@ -7,12 +7,12 @@ from requests_html import HTMLSession
 import w3lib.html
 import html
 
-# Conectarse a la base de datos
+# Conectarse a la base de datos cambiando los datos de tu usuario y base creada
 conexion = mariadb.connect(
     host="localhost",
-    user="fernando",
-    password="fernando0607",
-    database="medios_prensa"
+    user="user",
+    password="pasword",
+    database="database"
 )
 
 cursor = conexion.cursor()
