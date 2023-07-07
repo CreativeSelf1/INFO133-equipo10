@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: medios_prensa
+-- Host: localhost    Database: baseprueba
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.6.12-MariaDB-0ubuntu0.22.04.1
 
@@ -189,7 +189,7 @@ INSERT INTO `ubicacion` VALUES ('01ae00a2-8256-4fb2-b798-6fae86c0c5c9','Encarnac
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'medios_prensa'
+-- Dumping routines for database 'baseprueba'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -201,4 +201,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-07 16:29:08
+-- Dump completed on 2023-07-07 18:19:01
